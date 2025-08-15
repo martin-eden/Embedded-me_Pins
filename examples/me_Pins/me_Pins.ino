@@ -19,11 +19,10 @@
 
 void RunTest()
 {
-  const TUint_1 NumRuns = 16;
-  const TUint_2 InterrunDelay_Ms = 2000;
-
   const TUint_1 InputPinNumber = 8;
-  const TBool Saturate = true;
+
+  const TUint_1 NumRuns = 14;
+  const TUint_2 InterrunDelay_Ms = 2000;
 
   me_Pins::TInputPin InputPin;
 
@@ -36,13 +35,6 @@ void RunTest()
     {
       Console.Write("Input pin number");
       Console.Print(InputPinNumber);
-      Console.EndLine();
-    }
-
-    // Print whether value saturation (input-pullup) is enabled
-    {
-      Console.Write("Saturate");
-      Console.Print(Saturate);
       Console.EndLine();
     }
 
@@ -68,41 +60,6 @@ void RunTest()
   {
     if (!InputPin.Init(InputPinNumber))
       Console.Print("Pin setup failed");
-    if (!InputPin.SetSaturation(Saturate))
-      Console.Print("Setting saturation failed");
-  }
-
-  // Print state
-  {
-    TUint_1 RealPinNumber = 0;
-    TBool RealSaturation = false;
-
-    Console.Print("( State");
-    Console.Indent();
-
-    if (!InputPin.GetPinNumber(&RealPinNumber))
-    {
-      Console.Print("Getting pin number failed");
-    }
-    else
-    {
-      Console.Write("Pin number");
-      Console.Print(RealPinNumber);
-      Console.EndLine();
-    }
-
-    if (!InputPin.GetSaturation(&RealSaturation))
-    {
-      Console.Print("Getting saturation setting failed");
-    }
-    {
-      Console.Write("Saturation");
-      Console.Print(RealSaturation);
-      Console.EndLine();
-    }
-
-    Console.Unindent();
-    Console.Print(")");
   }
 
   for (TUint_1 RunNumber = 1; RunNumber <= NumRuns; ++RunNumber)
@@ -161,4 +118,5 @@ void loop()
 
 /*
   2025-08-01
+  2025-08-15
 */

@@ -28,16 +28,72 @@ TBool TInputPin::Init(
 {
   this->IsValidState = false;
 
-  if (!SetPinNumber(PinNumber))
+  if (!AdjustState(PinNumber))
     return false;
 
-  SetSaturationOn();
-
   SetReadMode();
+
+  EnableSaturation();
 
   this->IsValidState = true;
 
   return true;
+}
+
+/*
+  Setup internal state
+
+  For correct pin updates internal state. Returns true.
+  For wrong pin does nothing. Returns false.
+
+  We're not using pin number for work, we converting it
+  to bit address.
+*/
+TBool TInputPin::AdjustState(
+  TUint_1 PinNumber
+)
+{
+  TAddress ByteAddr;
+  TUint_1 BitOffs;
+  TBool GotAddr;
+
+  GotAddr =
+    me_UnoAddresses::GetPinAddress(&ByteAddr, &BitOffs, PinNumber);
+
+  if (!GotAddr)
+    return false;
+
+  this->WritePortAddress = ByteAddr;
+  this->BitOffset = BitOffs;
+
+  return true;
+}
+
+/*
+  Get mode port address from base address
+
+  Internal helper
+*/
+TAddress TInputPin::GetModePortAddress()
+{
+  // Pin mode port address is one before write port address (for ATmega328)
+  return this->WritePortAddress - 1;
+}
+
+/*
+  Get read port address. Internal helper
+*/
+TAddress TInputPin::GetReadPortAddress()
+{
+  return this->WritePortAddress - 2;
+}
+
+/*
+  Get write port address. Internal helper
+*/
+TAddress TInputPin::GetWritePortAddress()
+{
+  return this->WritePortAddress;
 }
 
 /*
@@ -47,74 +103,12 @@ TBool TInputPin::Init(
 */
 void TInputPin::SetReadMode()
 {
-  // Pin mode port address is one before write port address (for ATmega328)
-  TAddress ModePortAddr = this->WritePortAddress - 1;
-
+  TAddress ModePortAddr = GetModePortAddress();
   TUint_1 ByteValue = 0;
 
   me_WorkMemory::GetByte(&ByteValue, ModePortAddr);
   me_Bits::SetBitToZero(&ByteValue, this->BitOffset);
   me_WorkMemory::SetByte(ByteValue, ModePortAddr);
-}
-
-/*
-  Get pin number
-*/
-TBool TInputPin::GetPinNumber(
-  TUint_1 * PinNumber
-)
-{
-  if (!this->IsValidState)
-    return false;
-
-  *PinNumber = this->PinNumber;
-
-  return true;
-}
-
-/*
-  Set pin number
-
-  For correct pin updates internal state. Returns true.
-  For wrong pin does nothing. Returns false.
-*/
-TBool TInputPin::SetPinNumber(
-  TUint_1 PinNumber
-)
-{
-  TAddress ByteAddr;
-  TUint_1 BitOffs;
-  TBool GotAddress;
-
-  GotAddress =
-    me_UnoAddresses::GetPinAddress(&ByteAddr, &BitOffs, PinNumber);
-
-  if (!GotAddress)
-    return false;
-
-  this->PinNumber = PinNumber;
-  this->WritePortAddress = ByteAddr;
-  this->BitOffset = BitOffs;
-
-  return true;
-}
-
-/*
-  Enable/disable saturation
-*/
-TBool TInputPin::SetSaturation(
-  TBool SaturationEnabled
-)
-{
-  if (!this->IsValidState)
-    return false;
-
-  if (SaturationEnabled)
-    SetSaturationOn();
-  else
-    SetSaturationOff();
-
-  return true;
 }
 
 /*
@@ -124,53 +118,14 @@ TBool TInputPin::SetSaturation(
 
   Internal
 */
-void TInputPin::SetSaturationOn()
+void TInputPin::EnableSaturation()
 {
-  // WritePort[Bit] = 1
-
+  TAddress WritePortAddr = GetWritePortAddress();
   TUint_1 ByteValue = 0;
 
-  me_WorkMemory::GetByte(&ByteValue, this->WritePortAddress);
+  me_WorkMemory::GetByte(&ByteValue, WritePortAddr);
   me_Bits::SetBitToOne(&ByteValue, this->BitOffset);
-  me_WorkMemory::SetByte(ByteValue, this->WritePortAddress);
-
-  this->SaturationEnabled = true;
-}
-
-/*
-  Disable saturation
-
-  Disables input-pullup. Reading for unconnected pin will return
-  random value.
-
-  Internal
-*/
-void TInputPin::SetSaturationOff()
-{
-  // WritePort[Bit] = 0
-
-  TUint_1 ByteValue = 0;
-
-  me_WorkMemory::GetByte(&ByteValue, this->WritePortAddress);
-  me_Bits::SetBitToZero(&ByteValue, this->BitOffset);
-  me_WorkMemory::SetByte(ByteValue, this->WritePortAddress);
-
-  this->SaturationEnabled = false;
-}
-
-/*
-  Return saturation
-*/
-TBool TInputPin::GetSaturation(
-  TBool * SaturationEnabled
-)
-{
-  if (!this->IsValidState)
-    return false;
-
-  *SaturationEnabled = this->SaturationEnabled;
-
-  return true;
+  me_WorkMemory::SetByte(ByteValue, WritePortAddr);
 }
 
 /*
@@ -180,13 +135,11 @@ TBool TInputPin::Read(
   TUint_1 * BinaryValue
 )
 {
-  // Reading port address is two before write port address (for ATmega328)
-  TAddress ReadPortAddr = this->WritePortAddress - 2;
-
-  TUint_1 PortValues = 0;
-
   if (!this->IsValidState)
     return false;
+
+  TAddress ReadPortAddr = GetReadPortAddress();
+  TUint_1 PortValues = 0;
 
   me_WorkMemory::GetByte(&PortValues, ReadPortAddr);
   me_Bits::GetBit(BinaryValue, PortValues, this->BitOffset);
