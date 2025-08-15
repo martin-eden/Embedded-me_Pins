@@ -1,0 +1,28 @@
+( 2025-08-14
+
+  Input-pullup and "saturation"
+
+  What is the read value of pin to which nothing is connected:
+  LOW or HIGH?
+
+  Actually it's fluctuating and things getting more funny when you
+  attach wire to that pin. That wire will act like antenna.
+
+  This is not always fun, so serious guys are adding resistor between
+  V and pin. This way free pin will be HIGH any time.
+
+  And connected pin can be pulled to LOW easily.
+
+
+  But how to name it? Groking about this input-pullup (and "Tri-state"
+  and "Hi-Z") required my efforts. Can we make it simpler?
+
+  Initially I named this setting "Free pin value". Another names were
+  "Default pin value" (but there is no fault) and "Idle pin value".
+
+  But soon I've discovered there is no sense in "Free pin value = 0"
+  -- pin value will just fluctuate.
+
+  So analogy is inflated balloon. Or pressurized pipe. For some
+  reason I chose word "saturated".
+)
