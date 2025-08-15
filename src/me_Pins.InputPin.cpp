@@ -1,4 +1,4 @@
-// ATmega328/P pins. Interface implementation
+// ATmega328/P pins. Input pin interface implementation
 
 /*
   Author: Martin Eden
@@ -8,7 +8,6 @@
 #include "me_Pins.h"
 
 #include <me_BaseTypes.h>
-#include <me_UnoAddresses.h>
 #include <me_WorkMemory.h>
 #include <me_Bits.h>
 
@@ -26,74 +25,17 @@ TBool TInputPin::Init(
   TUint_1 PinNumber
 )
 {
-  this->IsValidState = false;
+  this->IsArmed = false;
 
-  if (!AdjustState(PinNumber))
+  if (!TBasePin::Init(PinNumber))
     return false;
 
   SetReadMode();
-
   EnableSaturation();
 
-  this->IsValidState = true;
+  this->IsArmed = true;
 
   return true;
-}
-
-/*
-  Setup internal state
-
-  For correct pin updates internal state. Returns true.
-  For wrong pin does nothing. Returns false.
-
-  We're not using pin number for work, we converting it
-  to bit address.
-*/
-TBool TInputPin::AdjustState(
-  TUint_1 PinNumber
-)
-{
-  TAddress ByteAddr;
-  TUint_1 BitOffs;
-  TBool GotAddr;
-
-  GotAddr =
-    me_UnoAddresses::GetPinAddress(&ByteAddr, &BitOffs, PinNumber);
-
-  if (!GotAddr)
-    return false;
-
-  this->WritePortAddress = ByteAddr;
-  this->BitOffset = BitOffs;
-
-  return true;
-}
-
-/*
-  Get mode port address from base address
-
-  Internal helper
-*/
-TAddress TInputPin::GetModePortAddress()
-{
-  // Pin mode port address is one before write port address (for ATmega328)
-  return this->WritePortAddress - 1;
-}
-
-/*
-  Get read port address. Internal helper
-*/
-TAddress TInputPin::GetReadPortAddress()
-{
-  return this->WritePortAddress - 2;
-}
-
-/*
-  Get write port address. Internal helper
-*/
-TAddress TInputPin::GetWritePortAddress()
-{
-  return this->WritePortAddress;
 }
 
 /*
@@ -135,7 +77,7 @@ TBool TInputPin::Read(
   TUint_1 * BinaryValue
 )
 {
-  if (!this->IsValidState)
+  if (!this->IsArmed)
     return false;
 
   TAddress ReadPortAddr = GetReadPortAddress();

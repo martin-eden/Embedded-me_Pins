@@ -9,30 +9,57 @@
 
 namespace me_Pins
 {
-  class TInputPin
+  /*
+    Toolset for pin classes. Internal
+  */
+  class TBasePin
+  {
+    protected:
+      TUint_1 BitOffset;
+
+      TBool Init(TUint_1 PinNumber);
+
+      TAddress GetModePortAddress();
+      TAddress GetReadPortAddress();
+      TAddress GetWritePortAddress();
+
+    private:
+      TAddress BaseAddress;
+
+      TBool AdjustState(TUint_1 PinNumber);
+  };
+
+  /*
+    Input pin
+  */
+  class TInputPin : protected TBasePin
   {
     public:
       TBool Init(TUint_1 PinNumber);
       TBool Read(TUint_1 * BinaryValue);
 
     private:
-      TBool IsValidState;
-      TAddress WritePortAddress;
-      TUint_1 BitOffset;
+      TBool IsArmed = false;
 
-      TAddress GetModePortAddress();
-      TAddress GetReadPortAddress();
-      TAddress GetWritePortAddress();
-
-      TBool AdjustState(TUint_1 PinNumber);
       void SetReadMode();
       void EnableSaturation();
   };
 
-  class TOutputPin
+  /*
+    Output pin
+  */
+  class TOutputPin : protected TBasePin
   {
     public:
+      TBool Init(TUint_1 PinNumber);
+      TBool Write(TUint_1 BinaryValue);
+
     private:
+      TBool IsArmed = false;
+
+      void SetWriteMode();
+      void DriveLow();
+      void DriveHigh();
   };
 }
 
