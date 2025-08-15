@@ -19,7 +19,7 @@ TBool TBasePin::Init(
   TUint_1 PinNumber
 )
 {
-  if (!AdjustState(PinNumber))
+  if (!SetupState(PinNumber))
     return false;
 
   return true;
@@ -34,7 +34,7 @@ TBool TBasePin::Init(
   We need one item: pin number. We'll convert it to bit address.
   We're not storing pin number.
 */
-TBool TBasePin::AdjustState(
+TBool TBasePin::SetupState(
   TUint_1 PinNumber
 )
 {
@@ -43,8 +43,8 @@ TBool TBasePin::AdjustState(
   TBool GotAddr;
 
   /*
-    GetPinAddress() will return address of Write port.
-    It will become base address.
+    GetPinAddress() returns address of Write port.
+    We will use it as our base address.
   */
   GotAddr =
     me_UnoAddresses::GetPinAddress(&ByteAddr, &BitOffs, PinNumber);

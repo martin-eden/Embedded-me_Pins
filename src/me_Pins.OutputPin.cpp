@@ -33,7 +33,7 @@ TBool TOutputPin::Init(
 }
 
 /*
-  Set write mode
+  Set write mode, drive HIGH
 
   Internal
 */
@@ -45,6 +45,8 @@ void TOutputPin::SetWriteMode()
   me_WorkMemory::GetByte(&ByteValue, ModePortAddr);
   me_Bits::SetBitToOne(&ByteValue, this->BitOffset);
   me_WorkMemory::SetByte(ByteValue, ModePortAddr);
+
+  DriveHigh();
 }
 
 /*
@@ -54,16 +56,42 @@ TBool TOutputPin::Write(
   TUint_1 BinaryValue
 )
 {
-  if (!this->IsArmed)
-    return false;
-
   if (!me_Bits::Freetown::CheckBitValue(BinaryValue))
     return false;
 
   if (BinaryValue == 0)
-    DriveLow();
-  else if (BinaryValue == 1)
-    DriveHigh();
+    return WriteZero();
+
+  if (BinaryValue == 1)
+    return WriteOne();
+
+  return false;
+}
+
+/*
+  Set pin value to zero (LOW)
+
+  We're keeping "write" analogy. More hardware verb is "drive".
+*/
+TBool TOutputPin::WriteZero()
+{
+  if (!this->IsArmed)
+    return false;
+
+  DriveLow();
+
+  return true;
+}
+
+/*
+  Set pin value to one (HIGH)
+*/
+TBool TOutputPin::WriteOne()
+{
+  if (!this->IsArmed)
+    return false;
+
+  DriveHigh();
 
   return true;
 }

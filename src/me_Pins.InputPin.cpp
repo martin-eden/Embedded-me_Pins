@@ -31,7 +31,6 @@ TBool TInputPin::Init(
     return false;
 
   SetReadMode();
-  EnableSaturation();
 
   this->IsArmed = true;
 
@@ -39,7 +38,7 @@ TBool TInputPin::Init(
 }
 
 /*
-  Set read mode
+  Set read mode, enable saturation
 
   Internal
 */
@@ -51,6 +50,8 @@ void TInputPin::SetReadMode()
   me_WorkMemory::GetByte(&ByteValue, ModePortAddr);
   me_Bits::SetBitToZero(&ByteValue, this->BitOffset);
   me_WorkMemory::SetByte(ByteValue, ModePortAddr);
+
+  EnableSaturation();
 }
 
 /*
