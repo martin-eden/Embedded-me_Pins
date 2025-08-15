@@ -1,6 +1,4 @@
-( 2025-08-14
-
-  Input-pullup and "saturation"
+( Input-pullup and "saturation"
 
   What is the read value of pin to which nothing is connected:
   LOW or HIGH?
@@ -25,4 +23,26 @@
 
   So analogy is inflated balloon. Or pressurized pipe. For some
   reason I chose word "saturated".
+) 2025-08-14
+
+( Ports
+
+  Pins are grouped in bit "ports". Pin requires three bits to
+  configure and control it. So three different ports per 8 pins.
+
+  Obvious design is use two bits per pin. One for read/write mode,
+  other for getting/setting value.
+
+  But not here. Here we have optional pull-up (which is always used
+  anyway). Here we have separate port for reading and another for
+  writing. And using writing port for input pin makes some additional
+  useless magic things. Same as using reading port for output pin.
+) 2025-08-15
+
+( No port A
+
+  Yeah really, we have ports B C and D. No port A. Each "port" occupies
+  three bytes and port B starts at address 0x23. So there probably
+  is/was port A at address 0x20. I'll call this port Atlantis.
 )
+
