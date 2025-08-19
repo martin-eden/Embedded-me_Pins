@@ -39,8 +39,8 @@ TBool TBasePin::Init(
   if (!GotAddr)
     return false;
 
-  this->BaseAddress = BaseAddr;
-  this->PinOffset = BitOffs;
+  this->PinRef.BaseAddress = BaseAddr;
+  this->PinRef.PinOffset = BitOffs;
 
   return true;
 }

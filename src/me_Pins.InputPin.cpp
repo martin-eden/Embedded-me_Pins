@@ -40,8 +40,8 @@ TBool TInputPin::Init(
 */
 void TInputPin::SetReadMode()
 {
-  Freetown::SetReadMode(this->BaseAddress, this->PinOffset);
-  Freetown::EnableSaturation(this->BaseAddress, this->PinOffset);
+  Freetown::SetReadMode(this->PinRef);
+  Freetown::EnableSaturation(this->PinRef);
 }
 
 /*
@@ -54,7 +54,7 @@ TBool TInputPin::Read(
   if (!this->IsArmed)
     return false;
 
-  Freetown::ReadPin(BitValue, this->BaseAddress, this->PinOffset);
+  Freetown::ReadPin(BitValue, this->PinRef);
 
   return true;
 }

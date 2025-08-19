@@ -13,6 +13,10 @@
   So code is lengthy and overcautious.
 */
 
+/*
+  Code size for 2025-08-19: (2340 217)
+*/
+
 #include <me_Pins.h>
 
 #include <me_BaseTypes.h>

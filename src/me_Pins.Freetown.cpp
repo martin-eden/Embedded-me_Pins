@@ -46,13 +46,12 @@ TAddress Freetown::GetWritePortAddress(
   Set read mode
 */
 void Freetown::SetReadMode(
-  TAddress BaseAddress,
-  TUint_1 PinOffset
+  TPinLocation PinRef
 )
 {
-  TAddress ModePortAddr = GetModePortAddress(BaseAddress);
+  TAddress ModePortAddr = GetModePortAddress(PinRef.BaseAddress);
 
-  me_Bits_Workmem::SetBitTo(ModePortAddr, PinOffset, 0);
+  me_Bits_Workmem::SetBitTo(ModePortAddr, PinRef.PinOffset, 0);
 }
 
 /*
@@ -61,13 +60,12 @@ void Freetown::SetReadMode(
   Enables input-pullup. Reading for unconnected pin will return HIGH.
 */
 void Freetown::EnableSaturation(
-  TAddress BaseAddress,
-  TUint_1 PinOffset
+  TPinLocation PinRef
 )
 {
-  TAddress WritePortAddr = GetWritePortAddress(BaseAddress);
+  TAddress WritePortAddr = GetWritePortAddress(PinRef.BaseAddress);
 
-  me_Bits_Workmem::SetBitTo(WritePortAddr, PinOffset, 1);
+  me_Bits_Workmem::SetBitTo(WritePortAddr, PinRef.PinOffset, 1);
 }
 
 /*
@@ -75,40 +73,37 @@ void Freetown::EnableSaturation(
 */
 void Freetown::ReadPin(
   TUint_1 * PinValue,
-  TAddress BaseAddress,
-  TUint_1 PinOffset
+  TPinLocation PinRef
 )
 {
-  TAddress ReadPortAddr = GetReadPortAddress(BaseAddress);
+  TAddress ReadPortAddr = GetReadPortAddress(PinRef.BaseAddress);
 
-  me_Bits_Workmem::GetBit(PinValue, ReadPortAddr, PinOffset);
+  me_Bits_Workmem::GetBit(PinValue, ReadPortAddr, PinRef.PinOffset);
 }
 
 /*
   Set write mode
 */
 void Freetown::SetWriteMode(
-  TAddress BaseAddress,
-  TUint_1 PinOffset
+  TPinLocation PinRef
 )
 {
-  TAddress ModePortAddr = GetModePortAddress(BaseAddress);
+  TAddress ModePortAddr = GetModePortAddress(PinRef.BaseAddress);
 
-  me_Bits_Workmem::SetBitTo(ModePortAddr, PinOffset, 1);
+  me_Bits_Workmem::SetBitTo(ModePortAddr, PinRef.PinOffset, 1);
 }
 
 /*
   Drive pin to LOW or HIGH
 */
 void Freetown::DrivePinTo(
-  TAddress BaseAddress,
-  TUint_1 PinOffset,
+  TPinLocation PinRef,
   TUint_1 PinValue
 )
 {
-  TAddress WritePortAddr = GetWritePortAddress(BaseAddress);
+  TAddress WritePortAddr = GetWritePortAddress(PinRef.BaseAddress);
 
-  me_Bits_Workmem::SetBitTo(WritePortAddr, PinOffset, PinValue);
+  me_Bits_Workmem::SetBitTo(WritePortAddr, PinRef.PinOffset, PinValue);
 }
 
 /*

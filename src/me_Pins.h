@@ -52,13 +52,21 @@
 namespace me_Pins
 {
   /*
-    Toolset for pin classes. Internal
+    Pin description for low-level functions
+  */
+  struct TPinLocation
+  {
+    TAddress BaseAddress;
+    TUint_1 PinOffset;
+  };
+
+  /*
+    Base class. Keeper of pin description
   */
   class TBasePin
   {
     protected:
-      TAddress BaseAddress;
-      TUint_1 PinOffset;
+      TPinLocation PinRef;
 
       TBool Init(TUint_1 PinNumber);
   };
@@ -126,11 +134,11 @@ namespace me_Pins
     TAddress GetReadPortAddress(TAddress BaseAddress);
     TAddress GetWritePortAddress(TAddress BaseAddress);
 
-    void SetReadMode(TAddress BaseAddress, TUint_1 PinOffset);
-    void EnableSaturation(TAddress BaseAddress, TUint_1 PinOffset);
-    void ReadPin(TUint_1 * PinValue, TAddress BaseAddress, TUint_1 PinOffset);
-    void SetWriteMode(TAddress BaseAddress, TUint_1 PinOffset);
-    void DrivePinTo(TAddress BaseAddress, TUint_1 PinOffset, TUint_1 PinValue);
+    void SetReadMode(TPinLocation PinRef);
+    void EnableSaturation(TPinLocation PinRef);
+    void ReadPin(TUint_1 * PinValue, TPinLocation PinRef);
+    void SetWriteMode(TPinLocation PinRef);
+    void DrivePinTo(TPinLocation PinRef, TUint_1 PinValue);
   }
 }
 

@@ -36,8 +36,8 @@ TBool TOutputPin::Init(
 */
 void TOutputPin::SetWriteMode()
 {
-  Freetown::SetWriteMode(this->BaseAddress, this->PinOffset);
-  Freetown::DrivePinTo(this->BaseAddress, this->PinOffset, 1);
+  Freetown::SetWriteMode(this->PinRef);
+  Freetown::DrivePinTo(this->PinRef, 1);
 }
 
 /*
@@ -53,7 +53,7 @@ TBool TOutputPin::Write(
   if (!me_Bits::CheckBitValue(BitValue))
     return false;
 
-  Freetown::DrivePinTo(this->BaseAddress, this->PinOffset, BitValue);
+  Freetown::DrivePinTo(this->PinRef, BitValue);
 
   return true;
 }
