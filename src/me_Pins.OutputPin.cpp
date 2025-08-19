@@ -49,16 +49,16 @@ void TOutputPin::SetWriteMode()
   Set pin value
 */
 TBool TOutputPin::Write(
-  TUint_1 BinaryValue
+  TUint_1 BitValue
 )
 {
-  if (!me_Bits::Freetown::CheckBitValue(BinaryValue))
+  if (!me_Bits::Freetown::CheckBitValue(BitValue))
     return false;
 
-  if (BinaryValue == 0)
+  if (BitValue == 0)
     return WriteZero();
 
-  if (BinaryValue == 1)
+  if (BitValue == 1)
     return WriteOne();
 
   return false;
@@ -80,7 +80,7 @@ TBool TOutputPin::WriteZero()
 }
 
 /*
-  Set pin value to one (HIGH)
+  Set pin to one (HIGH)
 */
 TBool TOutputPin::WriteOne()
 {

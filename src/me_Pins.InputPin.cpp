@@ -68,7 +68,7 @@ void TInputPin::EnableSaturation()
   Read pin value
 */
 TBool TInputPin::Read(
-  TUint_1 * BinaryValue
+  TUint_1 * BitValue
 )
 {
   TAddress ReadPortAddr = GetReadPortAddress();
@@ -77,7 +77,7 @@ TBool TInputPin::Read(
     return false;
 
   return
-    me_Bits_Workmem::GetBit(BinaryValue, ReadPortAddr, this->BitOffset);
+    me_Bits_Workmem::GetBit(BitValue, ReadPortAddr, this->BitOffset);
 }
 
 /*

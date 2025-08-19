@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-15
+  Last mod.: 2025-08-19
 */
 
 #include "me_Pins.h"
@@ -52,7 +52,7 @@ TBool TIoPin::Init(
   Read pin value
 */
 TBool TIoPin::Read(
-  TUint_1 * BinaryValue
+  TUint_1 * BitValue
 )
 {
   if (!this->IsArmed)
@@ -65,14 +65,14 @@ TBool TIoPin::Read(
     this->PinMode = TPinModes::Input;
   }
 
-  return TInputPin::Read(BinaryValue);
+  return TInputPin::Read(BitValue);
 }
 
 /*
   Write pin value
 */
 TBool TIoPin::Write(
-  TUint_1 BinaryValue
+  TUint_1 BitValue
 )
 {
   if (!this->IsArmed)
@@ -93,7 +93,7 @@ TBool TIoPin::Write(
     this->PinMode = TPinModes::Output;
   }
 
-  return TOutputPin::Write(BinaryValue);
+  return TOutputPin::Write(BitValue);
 }
 
 /*

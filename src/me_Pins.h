@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-15
+  Last mod.: 2025-08-19
 */
 
 /*
@@ -78,7 +78,7 @@ namespace me_Pins
   {
     public:
       TBool Init(TUint_1 PinNumber);
-      TBool Read(TUint_1 * BinaryValue);
+      TBool Read(TUint_1 * BitValue);
 
     protected:
       void SetReadMode();
@@ -96,7 +96,7 @@ namespace me_Pins
   {
     public:
       TBool Init(TUint_1 PinNumber);
-      TBool Write(TUint_1 BinaryValue);
+      TBool Write(TUint_1 BitValue);
       TBool WriteOne();
       TBool WriteZero();
 
@@ -124,8 +124,8 @@ namespace me_Pins
   {
     public:
       TBool Init(TUint_1 PinNumber);
-      TBool Read(TUint_1 * BinaryValue);
-      TBool Write(TUint_1 BinaryValue);
+      TBool Read(TUint_1 * BitValue);
+      TBool Write(TUint_1 BitValue);
 
     private:
       TBool IsArmed = false;
