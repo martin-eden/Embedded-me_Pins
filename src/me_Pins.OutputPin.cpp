@@ -2,14 +2,13 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-15
+  Last mod.: 2025-08-19
 */
 
 #include "me_Pins.h"
 
 #include <me_BaseTypes.h>
-#include <me_WorkMemory.h>
-#include <me_Bits.h>
+#include <me_Bits_Workmem.h>
 
 using namespace me_Pins;
 
@@ -40,11 +39,8 @@ TBool TOutputPin::Init(
 void TOutputPin::SetWriteMode()
 {
   TAddress ModePortAddr = GetModePortAddress();
-  TUint_1 ByteValue = 0;
 
-  me_WorkMemory::GetByte(&ByteValue, ModePortAddr);
-  me_Bits::SetBitToOne(&ByteValue, this->BitOffset);
-  me_WorkMemory::SetByte(ByteValue, ModePortAddr);
+  me_Bits_Workmem::SetBitToOne(ModePortAddr, this->BitOffset);
 
   DriveHigh();
 }
@@ -102,11 +98,8 @@ TBool TOutputPin::WriteOne()
 void TOutputPin::DriveLow()
 {
   TAddress WritePortAddr = GetWritePortAddress();
-  TUint_1 PortValues = 0;
 
-  me_WorkMemory::GetByte(&PortValues, WritePortAddr);
-  me_Bits::SetBitToZero(&PortValues, this->BitOffset);
-  me_WorkMemory::SetByte(PortValues, WritePortAddr);
+  me_Bits_Workmem::SetBitToZero(WritePortAddr, this->BitOffset);
 }
 
 /*
@@ -115,13 +108,11 @@ void TOutputPin::DriveLow()
 void TOutputPin::DriveHigh()
 {
   TAddress WritePortAddr = GetWritePortAddress();
-  TUint_1 PortValues = 0;
 
-  me_WorkMemory::GetByte(&PortValues, WritePortAddr);
-  me_Bits::SetBitToOne(&PortValues, this->BitOffset);
-  me_WorkMemory::SetByte(PortValues, WritePortAddr);
+  me_Bits_Workmem::SetBitToOne(WritePortAddr, this->BitOffset);
 }
 
 /*
   2025-08-15
+  2025-08-19 Using [me_Bits_Workmem]
 */

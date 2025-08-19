@@ -2,14 +2,13 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-15
+  Last mod.: 2025-08-19
 */
 
 #include "me_Pins.h"
 
 #include <me_BaseTypes.h>
-#include <me_WorkMemory.h>
-#include <me_Bits.h>
+#include <me_Bits_Workmem.h>
 
 using namespace me_Pins;
 
@@ -45,11 +44,8 @@ TBool TInputPin::Init(
 void TInputPin::SetReadMode()
 {
   TAddress ModePortAddr = GetModePortAddress();
-  TUint_1 ByteValue = 0;
 
-  me_WorkMemory::GetByte(&ByteValue, ModePortAddr);
-  me_Bits::SetBitToZero(&ByteValue, this->BitOffset);
-  me_WorkMemory::SetByte(ByteValue, ModePortAddr);
+  me_Bits_Workmem::SetBitToZero(ModePortAddr, this->BitOffset);
 
   EnableSaturation();
 }
@@ -64,11 +60,8 @@ void TInputPin::SetReadMode()
 void TInputPin::EnableSaturation()
 {
   TAddress WritePortAddr = GetWritePortAddress();
-  TUint_1 ByteValue = 0;
 
-  me_WorkMemory::GetByte(&ByteValue, WritePortAddr);
-  me_Bits::SetBitToOne(&ByteValue, this->BitOffset);
-  me_WorkMemory::SetByte(ByteValue, WritePortAddr);
+  me_Bits_Workmem::SetBitToOne(WritePortAddr, this->BitOffset);
 }
 
 /*
@@ -78,20 +71,18 @@ TBool TInputPin::Read(
   TUint_1 * BinaryValue
 )
 {
+  TAddress ReadPortAddr = GetReadPortAddress();
+
   if (!this->IsArmed)
     return false;
 
-  TAddress ReadPortAddr = GetReadPortAddress();
-  TUint_1 PortValues = 0;
-
-  me_WorkMemory::GetByte(&PortValues, ReadPortAddr);
-  me_Bits::GetBit(BinaryValue, PortValues, this->BitOffset);
-
-  return true;
+  return
+    me_Bits_Workmem::GetBit(BinaryValue, ReadPortAddr, this->BitOffset);
 }
 
 /*
   2025-08-01
   2025-08-14
   2025-08-15
+  2025-08-19 Using [me_Bits_Workmem]
 */

@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-15
+  Last mod.: 2025-08-19
 */
 
 /*
@@ -140,7 +140,7 @@ void RunDigitalInputTest(
   TUint_1 InputPinNumber
 )
 {
-  const TUint_1 NumRuns = 12;
+  const TUint_1 NumRuns = 8;
   const TUint_2 InterrunDelay_S = 2;
 
   me_Pins::TInputPin InputPin;
@@ -212,7 +212,7 @@ void RunDigitalOutputTest(
     Should use pin 13 for this. It's connected to onboard LED.
   */
 
-  const TUint_1 NumRuns = 24;
+  const TUint_1 NumRuns = 8;
   const TUint_1 InterrunDelay_S = 1;
   const TUint_2 TimeOff_Ms = 120;
 
