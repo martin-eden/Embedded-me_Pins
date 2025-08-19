@@ -57,18 +57,10 @@ namespace me_Pins
   class TBasePin
   {
     protected:
-      TUint_1 BitOffset;
+      TAddress BaseAddress;
+      TUint_1 PinOffset;
 
       TBool Init(TUint_1 PinNumber);
-
-      TAddress GetModePortAddress();
-      TAddress GetReadPortAddress();
-      TAddress GetWritePortAddress();
-
-    private:
-      TAddress BaseAddress;
-
-      TBool SetupState(TUint_1 PinNumber);
   };
 
   /*
@@ -85,8 +77,6 @@ namespace me_Pins
 
     private:
       TBool IsArmed = false;
-
-      void EnableSaturation();
   };
 
   /*
@@ -97,17 +87,12 @@ namespace me_Pins
     public:
       TBool Init(TUint_1 PinNumber);
       TBool Write(TUint_1 BitValue);
-      TBool WriteOne();
-      TBool WriteZero();
 
     protected:
       void SetWriteMode();
 
     private:
       TBool IsArmed = false;
-
-      void DriveLow();
-      void DriveHigh();
   };
 
   enum TPinModes
@@ -129,13 +114,29 @@ namespace me_Pins
 
     private:
       TBool IsArmed = false;
-
       TPinModes PinMode = TPinModes::Undefined;
   };
+
+  /*
+    Core access
+  */
+  namespace Freetown
+  {
+    TAddress GetModePortAddress(TAddress BaseAddress);
+    TAddress GetReadPortAddress(TAddress BaseAddress);
+    TAddress GetWritePortAddress(TAddress BaseAddress);
+
+    void SetReadMode(TAddress BaseAddress, TUint_1 PinOffset);
+    void EnableSaturation(TAddress BaseAddress, TUint_1 PinOffset);
+    void ReadPin(TUint_1 * PinValue, TAddress BaseAddress, TUint_1 PinOffset);
+    void SetWriteMode(TAddress BaseAddress, TUint_1 PinOffset);
+    void DrivePinTo(TAddress BaseAddress, TUint_1 PinOffset, TUint_1 PinValue);
+  }
 }
 
 /*
   2025-08-01
   2025-08-14
   2025-08-15
+  2025-08-19 Design cleanup
 */

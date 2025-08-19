@@ -14,14 +14,10 @@ using namespace me_Pins;
 /*
   Why do we have overridden Read() and Write()?
 
-  Leg of microcontroller aka "pin" at one time can sense signal
-  (be in input mode) and at another time provide signal (be in
-  output mode).
+  Leg of microcontroller aka "pin" at one time can either sense signal
+  (be in input mode) or provide signal (be in output mode).
 
-  Switching between modes is done outside Read() or Write() functions.
-  Also there are some special cases mentioned in datasheet.
-
-  This class handles switching between input and output modes.
+  Switching between modes is done in wrappers for Read() and Write().
 */
 
 /*

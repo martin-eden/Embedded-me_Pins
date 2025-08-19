@@ -8,7 +8,6 @@
 #include "me_Pins.h"
 
 #include <me_BaseTypes.h>
-#include <me_Bits_Workmem.h>
 
 using namespace me_Pins;
 
@@ -38,30 +37,11 @@ TBool TInputPin::Init(
 
 /*
   Set read mode, enable saturation
-
-  Internal
 */
 void TInputPin::SetReadMode()
 {
-  TAddress ModePortAddr = GetModePortAddress();
-
-  me_Bits_Workmem::SetBitToZero(ModePortAddr, this->BitOffset);
-
-  EnableSaturation();
-}
-
-/*
-  Enable saturation
-
-  Enables input-pullup. Reading for unconnected pin will return HIGH.
-
-  Internal
-*/
-void TInputPin::EnableSaturation()
-{
-  TAddress WritePortAddr = GetWritePortAddress();
-
-  me_Bits_Workmem::SetBitToOne(WritePortAddr, this->BitOffset);
+  Freetown::SetReadMode(this->BaseAddress, this->PinOffset);
+  Freetown::EnableSaturation(this->BaseAddress, this->PinOffset);
 }
 
 /*
@@ -71,13 +51,12 @@ TBool TInputPin::Read(
   TUint_1 * BitValue
 )
 {
-  TAddress ReadPortAddr = GetReadPortAddress();
-
   if (!this->IsArmed)
     return false;
 
-  return
-    me_Bits_Workmem::GetBit(BitValue, ReadPortAddr, this->BitOffset);
+  Freetown::ReadPin(BitValue, this->BaseAddress, this->PinOffset);
+
+  return true;
 }
 
 /*

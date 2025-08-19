@@ -8,7 +8,7 @@
 #include "me_Pins.h"
 
 #include <me_BaseTypes.h>
-#include <me_Bits_Workmem.h>
+#include <me_Bits.h>
 
 using namespace me_Pins;
 
@@ -33,16 +33,11 @@ TBool TOutputPin::Init(
 
 /*
   Set write mode, drive HIGH
-
-  Internal
 */
 void TOutputPin::SetWriteMode()
 {
-  TAddress ModePortAddr = GetModePortAddress();
-
-  me_Bits_Workmem::SetBitToOne(ModePortAddr, this->BitOffset);
-
-  DriveHigh();
+  Freetown::SetWriteMode(this->BaseAddress, this->PinOffset);
+  Freetown::DrivePinTo(this->BaseAddress, this->PinOffset, 1);
 }
 
 /*
@@ -52,61 +47,15 @@ TBool TOutputPin::Write(
   TUint_1 BitValue
 )
 {
-  if (BitValue == 0)
-    return WriteZero();
-
-  if (BitValue == 1)
-    return WriteOne();
-
-  return false;
-}
-
-/*
-  Set pin value to one (HIGH)
-
-  We're keeping "write" analogy. More hardware verb is "drive".
-*/
-TBool TOutputPin::WriteOne()
-{
   if (!this->IsArmed)
     return false;
 
-  DriveHigh();
-
-  return true;
-}
-
-/*
-  Set pin value to zero (LOW)
-*/
-TBool TOutputPin::WriteZero()
-{
-  if (!this->IsArmed)
+  if (!me_Bits::CheckBitValue(BitValue))
     return false;
 
-  DriveLow();
+  Freetown::DrivePinTo(this->BaseAddress, this->PinOffset, BitValue);
 
   return true;
-}
-
-/*
-  Drive pin to HIGH. Internal
-*/
-void TOutputPin::DriveHigh()
-{
-  TAddress WritePortAddr = GetWritePortAddress();
-
-  me_Bits_Workmem::SetBitToOne(WritePortAddr, this->BitOffset);
-}
-
-/*
-  Drive pin to LOW. Internal
-*/
-void TOutputPin::DriveLow()
-{
-  TAddress WritePortAddr = GetWritePortAddress();
-
-  me_Bits_Workmem::SetBitToZero(WritePortAddr, this->BitOffset);
 }
 
 /*

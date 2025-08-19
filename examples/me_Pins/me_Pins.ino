@@ -245,9 +245,9 @@ void RunDigitalOutputTest(
   {
     Console_Annotate(RunNumber, "Run #");
 
-    OutputPin.WriteZero();
+    OutputPin.Write(0);
     Delay(TimeOff_Ms);
-    OutputPin.WriteOne();
+    OutputPin.Write(1);
 
     Sleep(InterrunDelay_S);
   }
@@ -287,4 +287,5 @@ void loop()
 /*
   2025-08-01
   2025-08-15
+  2025-08-19
 */
