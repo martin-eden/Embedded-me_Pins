@@ -9,6 +9,7 @@ Pins input/output. ATmega328
 * [Interface][Interface]
 * [Implementation][Implementation]
 * [Example][Example]
+* [Notes][Notes]
 
 ## Requirements
 
@@ -32,9 +33,10 @@ arduino-cli compile --fqbn arduino:avr:uno --quiet --warnings all . --build-prop
 * [My other embedded C++ libraries][Embedded]
 * [My other repositories][Repos]
 
-[Example]: examples/me_Pins/me_Pins.ino
 [Interface]: src/me_Pins.h
 [Implementation]: src/
+[Example]: examples/me_Pins/me_Pins.ino
+[Notes]: extras/Notes.txt
 
 [GetLibs]: https://github.com/martin-eden/Embedded-Framework-GetLibs
 

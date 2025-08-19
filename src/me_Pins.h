@@ -103,6 +103,9 @@ namespace me_Pins
       TBool IsArmed = false;
   };
 
+  /*
+    Pin mode enumeration
+  */
   enum TPinModes
   {
     Undefined,
