@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-19
+  Last mod.: 2025-08-21
 */
 
 /*
@@ -14,13 +14,12 @@
 */
 
 /*
-  Code size for 2025-08-19: (2340 217)
+  Code size for 2025-08-21: (2340 217)
 */
 
 #include <me_Pins.h>
 
 #include <me_BaseTypes.h>
-#include <me_Uart.h>
 #include <me_Console.h>
 
 /*
@@ -275,7 +274,7 @@ void RunTests()
 
 void setup()
 {
-  me_Uart::Init(me_Uart::Speed_115k_Bps);
+  Console.Init();
 
   Console_OpenGroup("[me_Pins] test");
 
