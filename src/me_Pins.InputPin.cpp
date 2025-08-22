@@ -2,10 +2,10 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-19
+  Last mod.: 2025-08-22
 */
 
-#include "me_Pins.h"
+#include <me_Pins.h>
 
 #include <me_BaseTypes.h>
 
@@ -14,10 +14,7 @@ using namespace me_Pins;
 /*
   Setup pin for reading
 
-  We need one item: pin number.
-
-  We enable pin saturation. If somewhy you don't want it,
-  call "SetSaturation(false)" afterwards.
+  Signal for not connected pins is HIGH.
 */
 TBool TInputPin::Init(
   TUint_1 PinNumber

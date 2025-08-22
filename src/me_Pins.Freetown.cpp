@@ -2,15 +2,58 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-19
+  Last mod.: 2025-08-22
 */
 
-#include "me_Pins.h"
+#include <me_Pins.h>
 
 #include <me_BaseTypes.h>
 #include <me_Bits_Workmem.h>
 
 using namespace me_Pins;
+
+/*
+  Setup pin record by pin number
+
+  Specific to ATmega328
+*/
+TBool Freetown::InitPinRecord(
+  TPinLocation * PinRef,
+  TUint_1 PinNumber
+)
+{
+  /*
+    Addresses of Write ports
+
+    They are used as base address.
+  */
+  enum PortAddresses:TAddress
+  {
+    PortB = 37,
+    PortC = 40,
+    PortD = 43,
+  };
+
+  if (PinNumber <= 7)
+  {
+    PinRef->BaseAddress = PortAddresses::PortD;
+    PinRef->PinOffset = PinNumber;
+  }
+  else if ((PinNumber >= 8) && (PinNumber <= 13))
+  {
+    PinRef->BaseAddress = PortAddresses::PortB;
+    PinRef->PinOffset = PinNumber - 8;
+  }
+  else if ((PinNumber >= 14) && (PinNumber <= 19))
+  {
+    PinRef->BaseAddress = PortAddresses::PortC;
+    PinRef->PinOffset = PinNumber - 14;
+  }
+  else
+    return false;
+
+  return true;
+}
 
 /*
   Get Mode port address
@@ -108,4 +151,5 @@ void Freetown::DrivePinTo(
 
 /*
   2025-08-19
+  2025-08-22 Imported [me_UnoAddresses]
 */

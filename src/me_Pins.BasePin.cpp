@@ -2,50 +2,30 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-19
+  Last mod.: 2025-08-22
 */
 
-#include "me_Pins.h"
+#include <me_Pins.h>
 
 #include <me_BaseTypes.h>
-#include <me_UnoAddresses.h>
 
 using namespace me_Pins;
 
 /*
   Setup pin
 
-  For correct pin number it updates internal state. Returns true.
-  For wrong pin number it does nothing. Returns false.
-
-  We need one item: pin number. We'll convert it to bit address.
-  We're not storing pin number.
+  For correct pin number it updates internal state, returns true.
+  For wrong pin number it returns false.
 */
 TBool TBasePin::Init(
   TUint_1 PinNumber
 )
 {
-  TAddress BaseAddr;
-  TUint_1 BitOffs;
-  TBool GotAddr;
-
-  /*
-    GetPinAddress() returns address of Write port.
-    We will use it as our base address.
-  */
-  GotAddr =
-    me_UnoAddresses::GetPinAddress(&BaseAddr, &BitOffs, PinNumber);
-
-  if (!GotAddr)
-    return false;
-
-  this->PinRef.BaseAddress = BaseAddr;
-  this->PinRef.PinOffset = BitOffs;
-
-  return true;
+  return Freetown::InitPinRecord(&this->PinRef, PinNumber);
 }
 
 /*
   2025-08-15
   2025-08-19
+  2025-08-22
 */

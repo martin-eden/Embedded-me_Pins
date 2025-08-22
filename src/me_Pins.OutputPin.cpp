@@ -2,10 +2,10 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-19
+  Last mod.: 2025-08-22
 */
 
-#include "me_Pins.h"
+#include <me_Pins.h>
 
 #include <me_BaseTypes.h>
 #include <me_Bits.h>
@@ -13,7 +13,7 @@
 using namespace me_Pins;
 
 /*
-  Setup pin for writing
+  Setup pin for writing, drive LOW
 */
 TBool TOutputPin::Init(
   TUint_1 PinNumber
@@ -32,16 +32,16 @@ TBool TOutputPin::Init(
 }
 
 /*
-  Set write mode, drive HIGH
+  Set output mode, drive LOW
 */
 void TOutputPin::SetWriteMode()
 {
   Freetown::SetWriteMode(this->PinRef);
-  Freetown::DrivePinTo(this->PinRef, 1);
+  Freetown::DrivePinTo(this->PinRef, 0);
 }
 
 /*
-  Set pin value
+  Drive pin to binary value
 */
 TBool TOutputPin::Write(
   TUint_1 BitValue
@@ -61,4 +61,5 @@ TBool TOutputPin::Write(
 /*
   2025-08-15
   2025-08-19 Using [me_Bits_Workmem]
+  2025-08-22
 */

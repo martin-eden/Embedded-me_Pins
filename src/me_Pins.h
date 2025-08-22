@@ -133,6 +133,8 @@ namespace me_Pins
   */
   namespace Freetown
   {
+    TBool InitPinRecord(TPinLocation * PinRef, TUint_1 PinNumber);
+
     TAddress GetModePortAddress(TAddress BaseAddress);
     TAddress GetReadPortAddress(TAddress BaseAddress);
     TAddress GetWritePortAddress(TAddress BaseAddress);
