@@ -46,3 +46,14 @@
   is/was port A at address 0x20. I'll call this port Atlantis.
 ) 2025-08-15
 
+( Parallel input/output
+
+  ATmega328/P (Arduino Uno) is capable of parallel 8-bit input/output
+  at 16 megabytes/second.
+
+  Because pins are accessed as bits and pin bits are grouped in bytes.
+  You can read/write byte from fixed address in one tick.
+
+  This feature is not used anywhere, time of LPT ports is gone.
+  Just wanted to note this cool ability.
+)
