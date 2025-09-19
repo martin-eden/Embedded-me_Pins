@@ -1,8 +1,8 @@
-// [me_Pins] Test
+// [me_Pins] test
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-21
+  Last mod.: 2025-09-19
 */
 
 /*
@@ -13,52 +13,11 @@
   So code is lengthy and overcautious.
 */
 
-/*
-  Code size for 2025-08-21: (2340 217)
-*/
-
 #include <me_Pins.h>
 
 #include <me_BaseTypes.h>
 #include <me_Console.h>
-
-/*
-  Pause for given number of seconds
-
-  Adoption candidate.
-*/
-void Sleep(
-  TUint_1 NumSeconds
-)
-{
-  if (NumSeconds > 60)
-    return;
-
-  if (NumSeconds == 0)
-    return;
-
-  TUint_2 NumMillis = (TUint_2) NumSeconds * 1000;
-
-  delay(NumMillis);
-}
-
-/*
-  Delay for given number of milliseconds
-
-  Adoption candidate.
-*/
-void Delay(
-  TUint_2 NumMillis
-)
-{
-  if (NumMillis > 10000)
-    return;
-
-  if (NumMillis == 0)
-    return;
-
-  delay(NumMillis);
-}
+#include <me_Delays.h>
 
 /*
   Print group opening. Helper. Adoption candidate
@@ -72,10 +31,7 @@ void Console_OpenGroup(
   Console.Write("(");
 
   if (GroupName_Asciiz != NULL)
-  {
-    Console.Write(" ");
     Console.Write(GroupName_Asciiz);
-  }
 
   Console.EndLine();
 
@@ -96,10 +52,7 @@ void Console_CloseGroup(
   Console.Write(")");
 
   if (GroupName_Asciiz != NULL)
-  {
-    Console.Write(" ");
     Console.Write(GroupName_Asciiz);
-  }
 
   Console.EndLine();
 }
@@ -196,7 +149,7 @@ void RunDigitalInputTest(
 
     Console_CloseGroup();
 
-    Sleep(InterrunDelay_S);
+    me_Delays::Delay_S(InterrunDelay_S);
   }
 
   Console_CloseGroup();
@@ -246,13 +199,13 @@ void RunDigitalOutputTest(
 
   for (TUint_1 RunNumber = 1; RunNumber <= NumRuns; ++RunNumber)
   {
-    Console_Annotate(RunNumber, "Run #");
+    Console_Annotate(RunNumber, "Blink run #");
 
     OutputPin.Write(0);
-    Delay(TimeOff_Ms);
+    me_Delays::Delay_Ms(TimeOff_Ms);
     OutputPin.Write(1);
 
-    Sleep(InterrunDelay_S);
+    me_Delays::Delay_S(InterrunDelay_S);
   }
 
   Console_CloseGroup();
@@ -291,4 +244,5 @@ void loop()
   2025-08-01
   2025-08-15
   2025-08-19
+  2025-09-19
 */
