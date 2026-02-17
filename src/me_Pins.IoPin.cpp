@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-22
+  Last mod.: 2026-02-17
 */
 
 #include <me_Pins.h>
@@ -10,15 +10,6 @@
 #include <me_BaseTypes.h>
 
 using namespace me_Pins;
-
-/*
-  Why do we have overridden Read() and Write()?
-
-  Leg of microcontroller aka "pin" at one time can either sense signal
-  (be in input mode) or provide signal (be in output mode).
-
-  Switching between modes is done in wrappers for Read() and Write().
-*/
 
 /*
   Setup pin
@@ -29,39 +20,49 @@ TBool TIoPin::Init(
   TUint_1 PinNumber
 )
 {
-  this->IsArmed = false;
-
   if (!TOutputPin::Init(PinNumber))
     return false;
 
   if (!TInputPin::Init(PinNumber))
     return false;
 
-  this->PinMode = TPinModes::Input;
-
-  this->IsArmed = true;
+  SetMode(TPinModes::Input);
 
   return true;
 }
 
 /*
-  Read pin value
+  Get pin mode
 */
-TBool TIoPin::Read(
-  TUint_1 * BitValue
+TPinModes TIoPin::GetMode()
+{
+  return PinMode;
+}
+
+/*
+  Set pin mode
+*/
+void TIoPin::SetMode(
+  TPinModes PinMode
 )
 {
-  if (!this->IsArmed)
-    return false;
+  this->PinMode = PinMode;
 
-  if (this->PinMode != TPinModes::Input)
-  {
+  if (PinMode == TPinModes::Input)
     TInputPin::SetReadMode();
+  else if (PinMode == TPinModes::Output)
+    TOutputPin::SetWriteMode();
+}
 
-    this->PinMode = TPinModes::Input;
-  }
+/*
+  Read pin value
+*/
+TUint_1 TIoPin::Read()
+{
+  if (PinMode != TPinModes::Input)
+    SetMode(TPinModes::Input);
 
-  return TInputPin::Read(BitValue);
+  return TInputPin::Read();
 }
 
 /*
@@ -71,9 +72,6 @@ TBool TIoPin::Write(
   TUint_1 BitValue
 )
 {
-  if (!this->IsArmed)
-    return false;
-
   /*
     There are lot of vague words in (Datasheet @18.2.3) about
     transitions Input-Pullup -> Output-Low and
@@ -82,16 +80,13 @@ TBool TIoPin::Write(
     Truth is that no action needed. Mentioned "must"'s will occur
     as effect of setting pin mode bit.
   */
-  if (this->PinMode != TPinModes::Output)
-  {
-    TOutputPin::SetWriteMode();
-
-    this->PinMode = TPinModes::Output;
-  }
+  if (PinMode != TPinModes::Output)
+    SetMode(TPinModes::Output);
 
   return TOutputPin::Write(BitValue);
 }
 
 /*
   2025-08-15
+  2026-02-17
 */

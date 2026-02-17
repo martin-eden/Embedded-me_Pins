@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-22
+  Last mod.: 2026-02-17
 */
 
 #include <me_Pins.h>
@@ -12,16 +12,26 @@
 
 using namespace me_Pins;
 
-/*
-  Setup pin record by pin number
-
-  Specific to ATmega328
-*/
-TBool Freetown::InitPinRecord(
-  TPinLocation * PinRef,
+TBool Freetown::CheckPinNumber(
   TUint_1 PinNumber
 )
 {
+  return (PinNumber <= 19);
+}
+
+/*
+  Return write bit location for pin by pin number
+
+  Specific to ATmega328
+*/
+TBool Freetown::GetWritePinBit(
+  me_Bits_Workmem::TBitLocation * PinBit,
+  TUint_1 PinNumber
+)
+{
+  if (!CheckPinNumber(PinNumber))
+    return false;
+
   /*
     Addresses of Write ports
 
@@ -36,23 +46,31 @@ TBool Freetown::InitPinRecord(
 
   if (PinNumber <= 7)
   {
-    PinRef->BaseAddress = PortAddresses::PortD;
-    PinRef->PinOffset = PinNumber;
+    PinBit->MemAddr = PortAddresses::PortD;
+    PinBit->BitOffset = PinNumber;
   }
   else if ((PinNumber >= 8) && (PinNumber <= 13))
   {
-    PinRef->BaseAddress = PortAddresses::PortB;
-    PinRef->PinOffset = PinNumber - 8;
+    PinBit->MemAddr = PortAddresses::PortB;
+    PinBit->BitOffset = PinNumber - 8;
   }
   else if ((PinNumber >= 14) && (PinNumber <= 19))
   {
-    PinRef->BaseAddress = PortAddresses::PortC;
-    PinRef->PinOffset = PinNumber - 14;
+    PinBit->MemAddr = PortAddresses::PortC;
+    PinBit->BitOffset = PinNumber - 14;
   }
-  else
-    return false;
 
   return true;
+}
+
+/*
+  Get Write port address
+*/
+TAddress Freetown::GetWritePortAddress(
+  TAddress BaseAddress
+)
+{
+  return BaseAddress;
 }
 
 /*
@@ -76,80 +94,7 @@ TAddress Freetown::GetReadPortAddress(
 }
 
 /*
-  Get Write port address
-*/
-TAddress Freetown::GetWritePortAddress(
-  TAddress BaseAddress
-)
-{
-  return BaseAddress;
-}
-
-/*
-  Set read mode
-*/
-void Freetown::SetReadMode(
-  TPinLocation PinRef
-)
-{
-  TAddress ModePortAddr = GetModePortAddress(PinRef.BaseAddress);
-
-  me_Bits_Workmem::SetBitTo(ModePortAddr, PinRef.PinOffset, 0);
-}
-
-/*
-  Enable saturation
-
-  Enables input-pullup. Reading for unconnected pin will return HIGH.
-*/
-void Freetown::EnableSaturation(
-  TPinLocation PinRef
-)
-{
-  TAddress WritePortAddr = GetWritePortAddress(PinRef.BaseAddress);
-
-  me_Bits_Workmem::SetBitTo(WritePortAddr, PinRef.PinOffset, 1);
-}
-
-/*
-  Read pin value
-*/
-void Freetown::ReadPin(
-  TUint_1 * PinValue,
-  TPinLocation PinRef
-)
-{
-  TAddress ReadPortAddr = GetReadPortAddress(PinRef.BaseAddress);
-
-  me_Bits_Workmem::GetBit(PinValue, ReadPortAddr, PinRef.PinOffset);
-}
-
-/*
-  Set write mode
-*/
-void Freetown::SetWriteMode(
-  TPinLocation PinRef
-)
-{
-  TAddress ModePortAddr = GetModePortAddress(PinRef.BaseAddress);
-
-  me_Bits_Workmem::SetBitTo(ModePortAddr, PinRef.PinOffset, 1);
-}
-
-/*
-  Drive pin to LOW or HIGH
-*/
-void Freetown::DrivePinTo(
-  TPinLocation PinRef,
-  TUint_1 PinValue
-)
-{
-  TAddress WritePortAddr = GetWritePortAddress(PinRef.BaseAddress);
-
-  me_Bits_Workmem::SetBitTo(WritePortAddr, PinRef.PinOffset, PinValue);
-}
-
-/*
   2025-08-19
   2025-08-22 Imported [me_UnoAddresses]
+  2026-02-17
 */

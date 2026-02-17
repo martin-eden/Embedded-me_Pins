@@ -8,6 +8,7 @@
 #include <me_Pins.h>
 
 #include <me_BaseTypes.h>
+#include <me_Bits_Workmem.h>
 
 using namespace me_Pins;
 
@@ -20,40 +21,31 @@ TBool TInputPin::Init(
   TUint_1 PinNumber
 )
 {
-  this->IsArmed = false;
-
   if (!TBasePin::Init(PinNumber))
     return false;
 
   SetReadMode();
 
-  this->IsArmed = true;
-
   return true;
 }
 
 /*
-  Set read mode, enable saturation
+  Set read mode
+
+  Enables input-pullup. Reading for unconnected pin will return HIGH.
 */
 void TInputPin::SetReadMode()
 {
-  Freetown::SetReadMode(this->PinRef);
-  Freetown::EnableSaturation(this->PinRef);
+  ModeBit.Clear();
+  WriteBit.Set();
 }
 
 /*
   Read pin value
 */
-TBool TInputPin::Read(
-  TUint_1 * BitValue
-)
+TUint_1 TInputPin::Read()
 {
-  if (!this->IsArmed)
-    return false;
-
-  Freetown::ReadPin(BitValue, this->PinRef);
-
-  return true;
+  return ReadBit.Get();
 }
 
 /*
@@ -61,4 +53,5 @@ TBool TInputPin::Read(
   2025-08-14
   2025-08-15
   2025-08-19 Using [me_Bits_Workmem]
+  2026-02-17
 */

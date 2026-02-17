@@ -48,6 +48,7 @@
 */
 
 #include <me_BaseTypes.h>
+#include <me_Bits_Workmem.h>
 
 namespace me_Pins
 {
@@ -66,7 +67,9 @@ namespace me_Pins
   class TBasePin
   {
     protected:
-      TPinLocation PinRef;
+      me_Bits_Workmem::TBit ModeBit;
+      me_Bits_Workmem::TBit ReadBit;
+      me_Bits_Workmem::TBit WriteBit;
 
       TBool Init(TUint_1 PinNumber);
   };
@@ -78,13 +81,10 @@ namespace me_Pins
   {
     public:
       TBool Init(TUint_1 PinNumber);
-      TBool Read(TUint_1 * BitValue);
+      TUint_1 Read();
 
     protected:
       void SetReadMode();
-
-    private:
-      TBool IsArmed = false;
   };
 
   /*
@@ -98,17 +98,13 @@ namespace me_Pins
 
     protected:
       void SetWriteMode();
-
-    private:
-      TBool IsArmed = false;
   };
 
   /*
-    Pin mode enumeration
+    Pin modes enumeration
   */
   enum TPinModes
   {
-    Undefined,
     Input,
     Output
   };
@@ -120,12 +116,13 @@ namespace me_Pins
   {
     public:
       TBool Init(TUint_1 PinNumber);
-      TBool Read(TUint_1 * BitValue);
+      TPinModes GetMode();
+      void SetMode(TPinModes Mode);
+      TUint_1 Read();
       TBool Write(TUint_1 BitValue);
 
     private:
-      TBool IsArmed = false;
-      TPinModes PinMode = TPinModes::Undefined;
+      TPinModes PinMode;
   };
 
   /*
@@ -133,17 +130,12 @@ namespace me_Pins
   */
   namespace Freetown
   {
-    TBool InitPinRecord(TPinLocation * PinRef, TUint_1 PinNumber);
+    TBool CheckPinNumber(TUint_1 PinNumber);
+    TBool GetWritePinBit(me_Bits_Workmem::TBitLocation *, TUint_1 PinNumber);
 
     TAddress GetModePortAddress(TAddress BaseAddress);
     TAddress GetReadPortAddress(TAddress BaseAddress);
     TAddress GetWritePortAddress(TAddress BaseAddress);
-
-    void SetReadMode(TPinLocation PinRef);
-    void EnableSaturation(TPinLocation PinRef);
-    void ReadPin(TUint_1 * PinValue, TPinLocation PinRef);
-    void SetWriteMode(TPinLocation PinRef);
-    void DrivePinTo(TPinLocation PinRef, TUint_1 PinValue);
   }
 }
 
@@ -152,4 +144,5 @@ namespace me_Pins
   2025-08-14
   2025-08-15
   2025-08-19 Design cleanup
+  2026-02-17 Using bit locations for pin access
 */

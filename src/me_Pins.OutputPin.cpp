@@ -2,13 +2,13 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-22
+  Last mod.: 2026-02-17
 */
 
 #include <me_Pins.h>
 
 #include <me_BaseTypes.h>
-#include <me_Bits.h>
+#include <me_Bits_Workmem.h>
 
 using namespace me_Pins;
 
@@ -19,14 +19,10 @@ TBool TOutputPin::Init(
   TUint_1 PinNumber
 )
 {
-  this->IsArmed = false;
-
   if (!TBasePin::Init(PinNumber))
     return false;
 
   SetWriteMode();
-
-  this->IsArmed = true;
 
   return true;
 }
@@ -36,8 +32,8 @@ TBool TOutputPin::Init(
 */
 void TOutputPin::SetWriteMode()
 {
-  Freetown::SetWriteMode(this->PinRef);
-  Freetown::DrivePinTo(this->PinRef, 0);
+  ModeBit.Set();
+  WriteBit.Clear();
 }
 
 /*
@@ -47,19 +43,12 @@ TBool TOutputPin::Write(
   TUint_1 BitValue
 )
 {
-  if (!this->IsArmed)
-    return false;
-
-  if (!me_Bits::CheckBitValue(BitValue))
-    return false;
-
-  Freetown::DrivePinTo(this->PinRef, BitValue);
-
-  return true;
+  return WriteBit.SetTo(BitValue);
 }
 
 /*
   2025-08-15
   2025-08-19 Using [me_Bits_Workmem]
   2025-08-22
+  2026-02-17
 */
