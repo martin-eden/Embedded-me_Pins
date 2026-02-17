@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-09-19
+  Last mod.: 2026-02-17
 */
 
 /*
@@ -136,16 +136,9 @@ void RunDigitalInputTest(
     }
 
     // Read pin value
-    if (!InputPin.Read(&PinValue))
-    {
-      Console.Print("Reading pin value failed");
+    PinValue = InputPin.Read();
 
-      Console_CloseGroup();
-
-      break;
-    }
-    else
-      Console_Annotate(PinValue, "Pin value");
+    Console_Annotate(PinValue, "Pin value");
 
     Console_CloseGroup();
 
