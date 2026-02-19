@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2026-02-17
+  Last mod.: 2026-02-19
 */
 
 #include <me_Pins.h>
@@ -46,17 +46,17 @@ TBool Freetown::GetWritePinBit(
 
   if (PinNumber <= 7)
   {
-    PinBit->MemAddr = PortAddresses::PortD;
+    PinBit->Address = PortAddresses::PortD;
     PinBit->BitOffset = PinNumber;
   }
   else if ((PinNumber >= 8) && (PinNumber <= 13))
   {
-    PinBit->MemAddr = PortAddresses::PortB;
+    PinBit->Address = PortAddresses::PortB;
     PinBit->BitOffset = PinNumber - 8;
   }
   else if ((PinNumber >= 14) && (PinNumber <= 19))
   {
-    PinBit->MemAddr = PortAddresses::PortC;
+    PinBit->Address = PortAddresses::PortC;
     PinBit->BitOffset = PinNumber - 14;
   }
 

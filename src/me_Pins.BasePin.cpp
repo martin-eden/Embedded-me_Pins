@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2026-02-17
+  Last mod.: 2026-02-19
 */
 
 #include <me_Pins.h>
@@ -32,11 +32,11 @@ TBool TBasePin::Init(
   Freetown::GetWritePinBit(&WriteBitLoc, PinNumber);
   WriteBit.SetLocation(WriteBitLoc);
 
-  ReadBitLoc.MemAddr = Freetown::GetReadPortAddress(WriteBitLoc.MemAddr);
+  ReadBitLoc.Address = Freetown::GetReadPortAddress(WriteBitLoc.Address);
   ReadBitLoc.BitOffset = WriteBitLoc.BitOffset;
   ReadBit.SetLocation(ReadBitLoc);
 
-  ModeBitLoc.MemAddr = Freetown::GetModePortAddress(WriteBitLoc.MemAddr);
+  ModeBitLoc.Address = Freetown::GetModePortAddress(WriteBitLoc.Address);
   ModeBitLoc.BitOffset = WriteBitLoc.BitOffset;
   ModeBit.SetLocation(ModeBitLoc);
 
