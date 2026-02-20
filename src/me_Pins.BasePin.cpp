@@ -2,13 +2,13 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2026-02-19
+  Last mod.: 2026-02-20
 */
 
 #include <me_Pins.h>
 
 #include <me_BaseTypes.h>
-#include <me_Bits_Workmem.h>
+#include <me_Bits.h>
 
 using namespace me_Pins;
 
@@ -22,9 +22,9 @@ TBool TBasePin::Init(
   TUint_1 PinNumber
 )
 {
-  me_Bits_Workmem::TBitLocation WriteBitLoc;
-  me_Bits_Workmem::TBitLocation ReadBitLoc;
-  me_Bits_Workmem::TBitLocation ModeBitLoc;
+  me_Bits::TBitLocation WriteBitLoc;
+  me_Bits::TBitLocation ReadBitLoc;
+  me_Bits::TBitLocation ModeBitLoc;
 
   if (!Freetown::CheckPinNumber(PinNumber))
     return false;

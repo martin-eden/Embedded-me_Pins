@@ -2,13 +2,12 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2026-02-17
+  Last mod.: 2026-02-20
 */
 
 #include <me_Pins.h>
 
 #include <me_BaseTypes.h>
-#include <me_Bits_Workmem.h>
 
 using namespace me_Pins;
 
@@ -47,8 +46,6 @@ TBool TOutputPin::Write(
 }
 
 /*
-  2025-08-15
-  2025-08-19 Using [me_Bits_Workmem]
-  2025-08-22
+  2025 # # #
   2026-02-17
 */

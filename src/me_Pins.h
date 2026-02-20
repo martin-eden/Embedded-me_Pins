@@ -2,7 +2,7 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2025-08-19
+  Last mod.: 2026-02-20
 */
 
 /*
@@ -48,7 +48,7 @@
 */
 
 #include <me_BaseTypes.h>
-#include <me_Bits_Workmem.h>
+#include <me_Bits.h>
 
 namespace me_Pins
 {
@@ -67,9 +67,9 @@ namespace me_Pins
   class TBasePin
   {
     protected:
-      me_Bits_Workmem::TBit ModeBit;
-      me_Bits_Workmem::TBit ReadBit;
-      me_Bits_Workmem::TBit WriteBit;
+      me_Bits::TBit ModeBit;
+      me_Bits::TBit ReadBit;
+      me_Bits::TBit WriteBit;
 
       TBool Init(TUint_1 PinNumber);
   };
@@ -131,7 +131,7 @@ namespace me_Pins
   namespace Freetown
   {
     TBool CheckPinNumber(TUint_1 PinNumber);
-    TBool GetWritePinBit(me_Bits_Workmem::TBitLocation *, TUint_1 PinNumber);
+    TBool GetWritePinBit(me_Bits::TBitLocation *, TUint_1 PinNumber);
 
     TAddress GetModePortAddress(TAddress BaseAddress);
     TAddress GetReadPortAddress(TAddress BaseAddress);

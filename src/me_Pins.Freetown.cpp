@@ -2,13 +2,13 @@
 
 /*
   Author: Martin Eden
-  Last mod.: 2026-02-19
+  Last mod.: 2026-02-20
 */
 
 #include <me_Pins.h>
 
 #include <me_BaseTypes.h>
-#include <me_Bits_Workmem.h>
+#include <me_Bits.h>
 
 using namespace me_Pins;
 
@@ -25,7 +25,7 @@ TBool Freetown::CheckPinNumber(
   Specific to ATmega328
 */
 TBool Freetown::GetWritePinBit(
-  me_Bits_Workmem::TBitLocation * PinBit,
+  me_Bits::TBitLocation * PinBit,
   TUint_1 PinNumber
 )
 {
